@@ -25,7 +25,7 @@ export const ContactsPage = () => {
 
   useEffect(() => {
     dispatch(fetchContacts());
-  }, [dispatch]);
+  }, [dispatch]); 
 
   const handleAddContact = newContact => {
     dispatch(addContact(newContact));
