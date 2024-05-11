@@ -12,60 +12,63 @@ export const authSlice = createSlice({
     isRefreshing: false,
   },
   reducers: {},
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state, _action) => {
-        state.isLoading = true;
-      })
-      .addCase(register.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        state.isLoggedIn = true;
-      })
-      .addCase(register.rejected, (state, _action) => {
-        state.isLoggedIn = false;
-        state.isError = true;
-      })
-      .addCase(login.pending, (state, _action) => {
-        state.isLoading = true;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        state.isLoggedIn = true;
-      })
-      .addCase(login.rejected, (state, _action) => {
-        state.isLoggedIn = false;
-        state.isError = true;
-      })
-      .addCase(logout.pending, (state, _action) => {
-        state.isLoading = true;
-      })
-      .addCase(logout.fulfilled, (state, action) => {
-        state.user = null;
-        state.token = null;
-        state.isLoggedIn = false;
-      })
-      .addCase(logout.rejected, (state, _action) => {
-        state.isLoggedIn = true;
-        state.isError = true;
-      })
-      .addCase(refreshUser.pending, (state, _action) => {
-        state.isLoading = true;
-        state.isRefreshing = true;
-        state.isLoggedIn = false;
-      })
-      .addCase(refreshUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.user = action.payload;
-        state.isRefreshing = false;
-        state.isLoggedIn = true;
-      })
-      .addCase(refreshUser.rejected, (state, _action) => {
-        state.isLoggedIn = false;
-        state.isRefreshing = false;
-        state.isError = true;
-      });
+      .addMatcher(
+        (action) =>
+          [register.pending, login.pending, logout.pending, refreshUser.pending].includes(
+            action.type
+          ),
+        (state) => {
+          state.isLoading = true;
+        }
+      )
+      .addMatcher(
+        (action) =>
+          [register.fulfilled, login.fulfilled, logout.fulfilled, refreshUser.fulfilled].includes(
+            action.type
+          ),
+        (state, action) => {
+          state.user = action.payload.user;
+          state.token = action.payload.token;
+          state.isLoggedIn = true;
+          state.isLoading = false;
+        }
+      )
+      .addMatcher(
+        (action) =>
+          [register.rejected, login.rejected, logout.rejected, refreshUser.rejected].includes(
+            action.type
+          ),
+        (state) => {
+          state.isLoggedIn = false;
+          state.isError = true;
+          state.isLoading = false;
+        }
+      )
+      .addMatcher(
+        (action) => action.type === refreshUser.pending,
+        (state) => {
+          state.isRefreshing = true;
+        }
+      )
+      .addMatcher(
+        (action) => action.type === refreshUser.rejected,
+        (state) => {
+          state.isLoggedIn = false;
+          state.isRefreshing = false;
+          state.isError = true;
+        }
+      )
+      .addMatcher(
+        (action) => action.type === refreshUser.fulfilled,
+        (state, action) => {
+          state.isLoading = false;
+          state.user = action.payload;
+          state.isRefreshing = false;
+          state.isLoggedIn = true;
+        }
+      );
   },
 });
 
