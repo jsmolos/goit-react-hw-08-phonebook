@@ -9,9 +9,9 @@ import {
   selectFilter,
   selectError,
 } from '../redux/selectors';
-import { ContactForm } from 'components/ContactForm/ContactForm';
-import { ContactList } from 'components/ContactList/ContactList';
-import { Filter } from 'components/Filter/Filter';
+import { ContactForm } from '../components/ContactForm/ContactForm';
+import { Filter } from '../components/Filter/Filter';
+import { ContactList } from '../components/ContactList/ContactList';
 
 export const ContactsPage = () => {
   const visibleContacts = useSelector(selectVisibleContacts);
@@ -25,7 +25,7 @@ export const ContactsPage = () => {
 
   useEffect(() => {
     dispatch(fetchContacts());
-  }, [dispatch]); 
+  }, [dispatch]);
 
   const handleAddContact = newContact => {
     dispatch(addContact(newContact));

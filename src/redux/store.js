@@ -15,6 +15,7 @@ import { filterSlice } from './filterSlice';
 import { authSlice } from './auth/authSlice';
 
 
+
 const authPersistConfig = {
   key: 'auth',
   storage,
@@ -27,8 +28,8 @@ export const store = configureStore({
     contacts: contactsSlice.reducer,
     filter: filterSlice.reducer,
   },
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
+  middleware: buildGetDefaultMiddleware =>
+    buildGetDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },

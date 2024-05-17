@@ -4,7 +4,7 @@ import { Navigation } from 'components/Navigation/Navigation';
 
 export const SharedLayout = () => {
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '40px' }}>
       <Navigation />
       <Outlet />
     </div>
